@@ -4,4 +4,4 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 
 #load the data
-data = pd.read_csv('all_seasons.csv')
+data = pd.read_csv('all_player_stats.csv')
