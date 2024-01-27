@@ -13,5 +13,9 @@
 
 
 <style scoped>
-
+    h1 {
+        background-color: rgb(160, 160, 208);
+        padding: 1em;
+        font-size: 3em;
+    }
 </style>

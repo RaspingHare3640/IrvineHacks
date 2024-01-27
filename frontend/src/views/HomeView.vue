@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-      <Header/>
-  </div>
+      <!-- <Header/>   -->
+      </div>
 </template>
 
 <script>
