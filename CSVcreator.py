@@ -1,9 +1,7 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 import time
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playercareerstats
-from nba_api.stats.endpoints import leaguedashteamstats
 
 # Get all players
 active_player_dict = players.get_active_players()
