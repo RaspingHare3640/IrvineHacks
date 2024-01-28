@@ -16,8 +16,9 @@ def get_player_ids(data: pd.DataFrame, targetseason: str, player_id: int):
     Calculate similiarity between players per season
     Get unique years
     Return 10 most similar players to player_id in the given season
-    unique_seasons = data['SEASON_ID'].unique()
     '''
+    
+    unique_seasons = data['SEASON_ID'].unique()
 
     # Initialize a dictionary to store cosine similarity matrices for each season
     cosine_sim_by_season = {}
