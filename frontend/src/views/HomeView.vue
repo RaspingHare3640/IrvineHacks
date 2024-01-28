@@ -2,7 +2,7 @@
   <div class="home">
     <div>
     <div class="inp-cont">
-      <input class="team-input" @click="toggleDropdown" v-model="filterText" placeholder="Type to filter options" />
+      <input class="team-input" @click="toggleDropdown" v-model="filterText" placeholder="Type to filter teams" />
     </div>
     
     <div class="custom-dropdown">
@@ -99,26 +99,22 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .filter-input {
-  width: 100px;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 2em;
-}
 
 .team-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   -webkit-appearance: none;
   outline: none;
   border: none;
+  /* width: 200px; */
+  border-radius: 4em;
   transition: border 1s ease-in-out;
+  font-size: 1em;
+  padding: 0.75em;
 }
 
-/* .team-input:hover {
-  border-bottom: 2px solid #3498db
 
-} */
 
 .custom-dropdown {
   display: flex;
