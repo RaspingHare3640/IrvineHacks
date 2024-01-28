@@ -1,12 +1,21 @@
 <template>
   <div class="home">
-    <form action="">
-      <label for="teams">Select a Team</label>
-      <select name="teams" id="dropdown" v-model="selectedTeam">
-        <option v-for="team in teams"  :value="team">{{ team }}</option>
-      </select>
-    </form>    
-    <p>{{ selectedTeam }}</p>
+    <div>
+    <div class="inp-cont">
+      <input class="team-input" @click="toggleDropdown" v-model="filterText" placeholder="Type to filter options" />
+    </div>
+    
+    <div class="custom-dropdown">
+      <!-- <div class="selected-option" @click="toggleDropdown">{{ selectedTeam }}</div> -->
+      <!-- <div v-if="isDropdownOpen" :class="{ 'options': true, 'visible': isDropdownOpen }"> -->
+      <div :class="{ 'options': true, 'visible': isDropdownOpen  }"> 
+        <div v-for="team in filteredTeams" @click="selectTeam(team)">
+          {{ team }}
+        </div>
+      </div>
+    </div>
+    <p>Filter Text: {{ filterText }}</p>
+  </div>
   </div>
 </template>
 
@@ -20,6 +29,8 @@ export default {
   },
   data () {
     return {
+      filterText: "",
+      isDropdownOpen: false,
       selectedTeam: "",
       teams : [
       "Atlanta Hawks",
@@ -54,7 +65,107 @@ export default {
       "Washington Wizards"],
     }
     
-    
-  }
+  },
+  computed: {
+    filteredTeams() {
+      return this.teams.filter(team =>
+        team.toLowerCase().includes(this.filterText.toLowerCase())
+      );
+    },
+  },
+  methods: {
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    selectTeam(team) {
+      this.selectedTeam = team;
+      this.isDropdownOpen = false;
+      this.filterText = team
+    },
+  },
 }
 </script>
+
+
+<style scoped>
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .inp-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .filter-input {
+  width: 100px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 2em;
+}
+
+.team-input {
+  -webkit-appearance: none;
+  outline: none;
+  border: none;
+  transition: border 1s ease-in-out;
+}
+
+/* .team-input:hover {
+  border-bottom: 2px solid #3498db
+
+} */
+
+.custom-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selected-option {
+  cursor: pointer;
+  padding: 10px;
+  /* border: 1px solid #3498db; */
+  border-radius: 4px;
+  background-color: #3498db;
+  color: #fff;
+}
+
+.options {
+  /* flex: auto; */
+  /* position: center; */
+  top: 100%;
+  left: 0;
+  width: 15%;
+  background-color: #fff;
+  border: 1px solid #3498db;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.options.visible {
+  /* Set max-height to a sufficiently large value to show all options */
+  max-height: 80em;
+}
+
+.options div {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.options div:hover {
+  background-color: #f0f0f0;
+}
+
+</style>
