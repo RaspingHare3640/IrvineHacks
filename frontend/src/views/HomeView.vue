@@ -8,11 +8,14 @@
     <div class="custom-dropdown">
       <!-- <div class="selected-option" @click="toggleDropdown">{{ selectedTeam }}</div> -->
       <!-- <div v-if="isDropdownOpen" :class="{ 'options': true, 'visible': isDropdownOpen }"> -->
+        <button>Submit</button>
       <div :class="{ 'options': true, 'visible': isDropdownOpen  }"> 
         <div v-for="team in filteredTeams" @click="selectTeam(team)">
           {{ team }}
         </div>
+        
       </div>
+      
     </div>
     <p>Filter Text: {{ filterText }}</p>
   </div>
