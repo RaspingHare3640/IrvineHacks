@@ -2,10 +2,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nba_api.stats.static import players
 import pandas as pd
 import numpy as np
+import json
 
 def load_prep_data(datapath: str):
     '''
-    load and prep the data
+    Load and prep the data
     '''
     data = pd.read_csv(datapath)
     data = data.sort_values(by=['SEASON_ID', 'TEAM_ID'])
@@ -49,7 +50,7 @@ def get_player_ids(data: pd.DataFrame, targetseason: str, player_id: int):
     # Get the top 10 similar players for the player of interest 
     similar_players = cosine_sim_season[player_index].argsort()[-10:]
     '''
-    get the player IDs from a given season
+    Get the player IDs from a given season
     '''
     # Get the data for the season of interest
     data_season = data[data['SEASON_ID'] == season]
@@ -65,11 +66,30 @@ def get_player_ids(data: pd.DataFrame, targetseason: str, player_id: int):
     data_season = data_season.reset_index(drop=True)
 
     # Get the player IDs of the similar players
-    similar_player_ids = data_season.iloc[similar_players]['PLAYER_ID']
+    similar_player_ids = data_season.iloc[similar_players]['PLAYER_ID'].tolist()
+    similar_player_ids.append(player_id)
     return similar_player_ids
 
+def get_names(player_ids: list):
+    '''
+    Get the names of the players
+    '''
+    # Get the names of the similar players
+    similar_player_names = []
+    for id in player_ids:
+        player = players.find_player_by_id(id)
+        similar_player_names.append(player['full_name'])
+    return similar_player_names
+
+def json_exporter(names: list):
+    '''
+    Export the names to a JSON file
+    '''
+    with open('names.json', 'w') as f:
+        json.dump(names, f)
 
 if __name__ == '__main__':
     data = load_prep_data('all_player_stats.csv')
     ids = get_player_ids(data, '2023-24', 2544)
-    print(ids)
+    names = get_names(ids)
+    print(names)
