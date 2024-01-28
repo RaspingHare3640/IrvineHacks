@@ -11,7 +11,16 @@ def mean_stats(data: pd.DataFrame):
     # Reset the index to make 'PLAYER_ID' a column again
     average_stats.reset_index(inplace=True)
     return average_stats
-    
+
+def rank(data: pd.DataFrame, stat: str):
+    # Rank the players by a given stat
+    data = data.sort_values(by=[stat], ascending=True)
+    # Reset the index
+    data = data.reset_index(drop=True)
+    # Add a column for the rank of each player
+    data[stat + 'RANK'] = data.index + 1
+    return data
+
 if __name__== '__main__':
     # Load and prep the data
     data = sp.load_prep_data('all_player_stats.csv')
