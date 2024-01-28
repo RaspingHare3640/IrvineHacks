@@ -3,12 +3,12 @@
     <div>
     <div class="inp-cont">
       <input class="team-input" @click="toggleDropdown" v-model="filterText" placeholder="Type to filter teams" />
+      <button>Submit</button>
     </div>
     
     <div class="custom-dropdown">
       <!-- <div class="selected-option" @click="toggleDropdown">{{ selectedTeam }}</div> -->
       <!-- <div v-if="isDropdownOpen" :class="{ 'options': true, 'visible': isDropdownOpen }"> -->
-        <button>Submit</button>
       <div :class="{ 'options': true, 'visible': isDropdownOpen  }"> 
         <div v-for="team in filteredTeams" @click="selectTeam(team)">
           {{ team }}
