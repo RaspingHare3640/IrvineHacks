@@ -4,6 +4,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics.pairwise import cosine_similarity
 from nba_api.stats.static import players
 import pandas as pd
+import numpy as np
 
 #load the data
 data = pd.read_csv('all_player_stats.csv')
@@ -18,22 +19,31 @@ cosine_sim_by_season = {}
 
 # Loop over each unique year
 for year in unique_seasons:
-    # Subset the data for the current year
-    data_year = data[data['SEASON_ID'] == year]
+    # Subset the data for the current year and reset the index
+    data_year = data[data['SEASON_ID'] == year].reset_index(drop=True)
     
     # Compute the cosine similarity matrix for the current year
     cosine_sim_by_season[year] = cosine_similarity(data_year.iloc[:, 6:])
 
-# cosine_sim_by_season is a dict where the keys are seasons and the values are cosine similarity matrices for that season
-
-
 # Get the cosine similarity matrix for the season of interest
 cosine_sim_season = cosine_sim_by_season['2020-21']
-# Get the top 10 similar players for the player of interest
-player_id = 2544 
-similar_players = cosine_sim_season[player_id].argsort()[-10:]
 
-print(similar_players)
+# Find the index of the player of interest in the data for the season of interest
+player_id = 2544
+player_index = np.where(data[(data['SEASON_ID'] == '2020-21') & (data['PLAYER_ID'] == player_id)].index)[0][0]
+
+# Get the top 10 similar players for the player of interest 
+similar_players = cosine_sim_season[player_index].argsort()[-10:]
+'''
+get the player IDs from a given season
+'''
+# Get season data
+data_season = data[data['SEASON_ID'] == '2020-21'].reset_index(drop=True)
+
+#player IDs
+similar_player_ids = data_season.iloc[similar_players]['PLAYER_ID']
+
+print(similar_player_ids)
 
 # Create and train the model
 #model = LinearRegression()
