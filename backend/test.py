@@ -13,17 +13,19 @@ from datetime import datetime
 from tokenize import _all_string_prefixes
 
 import json
+from time import sleep
 
-data = {"Test": "Hello"}
+data = {"team": "Hello"}
 @app.route('/', methods=['POST', 'GET'])
 
 
+
 def index():
+    sleep(1)
     if request.method == 'POST':
-        operator = json.loads({"Test": "Hello"})
-        print("run")
+        team = json.loads(request.data)["team"]
+        data["team"] = team
     elif request.method == 'GET' :
-        print({"Test": "Hello"})
         return data
 
     return data

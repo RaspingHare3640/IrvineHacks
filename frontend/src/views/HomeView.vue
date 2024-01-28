@@ -3,8 +3,9 @@
     <div>
     <div class="inp-cont">
       <input class="team-input" @click="toggleDropdown" v-model="filterText" placeholder="Type to filter teams" />
-      <button @click="getRequest">Submit</button>
+      <button class="btn" @click="postRequest">Submit</button>
     </div>
+    
     
     <div class="custom-dropdown">
       <!-- <div class="selected-option" @click="toggleDropdown">{{ selectedTeam }}</div> -->
@@ -15,9 +16,10 @@
         </div>
         
       </div>
+      <button class="invis">Submit</button>
       
     </div>
-    <p>Filter Text: {{ filterText }}</p>
+    <!-- <p>Filter Text: {{ filterText }}</p> -->
   </div>
   </div>
 </template>
@@ -87,6 +89,25 @@ export default {
       this.filterText = team
     },
 
+    postRequest() {
+      const res = axios.post('http://127.0.0.1:5000', {
+        team: this.selectedTeam
+      }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+      }).then(request => {
+        
+        let req =  this.getRequest()
+
+        console.log(req)
+        
+
+      }).catch(error => console.log(error))
+
+      console.log("Run")
+    },
+
     async getRequest () {
       const res = await fetch("http://127.0.0.1:5000", {
           sus: "sus"
@@ -94,6 +115,7 @@ export default {
 
         const data = await res.json()
         console.log(data)
+        return data;
     }
   },
 }
@@ -105,6 +127,13 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+  }
+
+  .invis {
+    color: transparent;
+    background-color: transparent;
+    outline: none;
+    border: none;
   }
 
   .inp-cont {
@@ -121,10 +150,27 @@ export default {
   outline: none;
   border: none;
   /* width: 200px; */
-  border-radius: 4em;
+  border-radius: 0.5em;
   transition: border 1s ease-in-out;
   font-size: 1em;
   padding: 0.75em;
+}
+
+.btn {
+  outline: none;
+  padding: 0.75em;
+  background-color: transparent;
+  border: none;
+  border-radius: 0.75em;
+  transition: border 0.5s ease-in-out;
+}
+
+.btn:hover {
+  border: 3px solid #3498db;
+}
+
+.team-input:focus {
+  border-bottom: 2px solid #3498db;
 }
 
 
@@ -153,6 +199,7 @@ export default {
   background-color: #fff;
   border: 1px solid #3498db;
   border-top: none;
+  border-bottom: none;
   border-radius: 0 0 4px 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
