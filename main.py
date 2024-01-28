@@ -3,7 +3,7 @@ from nba_api.stats.static import players
 import pandas as pd
 import numpy as np
 
-def load_prep_data(datapath:str):
+def load_prep_data(datapath: str):
     '''
     load and prep the data
     '''
@@ -11,11 +11,13 @@ def load_prep_data(datapath:str):
     data = data.sort_values(by=['SEASON_ID', 'TEAM_ID'])
     return data
 
-def get_player_ids(data, targetseason, player_id):
-    # calculate similiarity between players per season
-    # Get unique years
-    # return 10 most similar players to player_id in the given season
+def get_player_ids(data: pd.DataFrame, targetseason: str, player_id: int):
+    ''' 
+    Calculate similiarity between players per season
+    Get unique years
+    Return 10 most similar players to player_id in the given season
     unique_seasons = data['SEASON_ID'].unique()
+    '''
 
     # Initialize a dictionary to store cosine similarity matrices for each season
     cosine_sim_by_season = {}
