@@ -1,6 +1,3 @@
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
 from sklearn.metrics.pairwise import cosine_similarity
 from nba_api.stats.static import players
 import pandas as pd
@@ -10,21 +7,30 @@ import numpy as np
 data = pd.read_csv('all_player_stats.csv')
 data = data.sort_values(by=['SEASON_ID', 'TEAM_ID'])
 
-# calculate similiarity between players per year
+# calculate similiarity between players per season
 # Get unique years
 unique_seasons = data['SEASON_ID'].unique()
 
-# Initialize a dictionary to store cosine similarity matrices for each year
+# Initialize a dictionary to store cosine similarity matrices for each season
 cosine_sim_by_season = {}
 
-# Loop over each unique year
-for year in unique_seasons:
-    # Subset the data for the current year and reset the index
-    data_year = data[data['SEASON_ID'] == year].reset_index(drop=True)
+# Loop over each unique season
+for season in unique_seasons:
+    # Subset the data for the current year
+    data_season = data[data['SEASON_ID'] == season]
     
-    # Compute the cosine similarity matrix for the current year
-    cosine_sim_by_season[year] = cosine_similarity(data_year.iloc[:, 6:])
+    # Identify players with multiple entries in the season
+    player_counts = data_season['PLAYER_ID'].value_counts()
+    multiple_teams_players = player_counts[player_counts > 1].index
 
+    # For players with multiple entries, keep only the 'TOT' row
+    data_season = data_season[(~data_season['PLAYER_ID'].isin(multiple_teams_players)) | (data_season['TEAM_ABBREVIATION'] == 'TOT')]
+
+    # Reset the index
+    data_season = data_season.reset_index(drop=True)
+    
+    # Compute the cosine similarity matrix for the current season
+    cosine_sim_by_season[season] = cosine_similarity(data_season.iloc[:, 6:])
 # Get the cosine similarity matrix for the season of interest
 cosine_sim_season = cosine_sim_by_season['2020-21']
 
@@ -37,21 +43,22 @@ similar_players = cosine_sim_season[player_index].argsort()[-10:]
 '''
 get the player IDs from a given season
 '''
-# Get season data
-data_season = data[data['SEASON_ID'] == '2020-21'].reset_index(drop=True)
+# Get the data for the season of interest
+data_season = data[data['SEASON_ID'] == '2020-21']
 
-#player IDs
+# Identify players with multiple entries in the season
+player_counts = data_season['PLAYER_ID'].value_counts()
+multiple_teams_players = player_counts[player_counts > 1].index
+
+# For players with multiple entries, keep only the 'TOT' row
+data_season = data_season[(~data_season['PLAYER_ID'].isin(multiple_teams_players)) | (data_season['TEAM_ABBREVIATION'] == 'TOT')]
+
+# Reset the index
+data_season = data_season.reset_index(drop=True)
+
+# Get the player IDs of the similar players
 similar_player_ids = data_season.iloc[similar_players]['PLAYER_ID']
 
-print(similar_player_ids)
 
-# Create and train the model
-#model = LinearRegression()
-#model.fit(features_train, target_train)
-
-# Make predictions
-#predictions = model.predict(features_test)
-
-# Evaluate the model
-#mse = mean_squared_error(target_test, predictions)
-#print(f'Mean Squared Error: {mse}')
+if __name__ == '__main__':
+    print(similar_player_ids)
