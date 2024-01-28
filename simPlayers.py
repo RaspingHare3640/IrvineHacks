@@ -2,7 +2,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nba_api.stats.static import players
 import pandas as pd
 import numpy as np
-import json
 
 def load_prep_data(datapath: str):
     '''
@@ -74,22 +73,20 @@ def get_names(player_ids: list):
     '''
     Get the names of the players
     '''
+    # Initialize an empty dictionary
+    player_names = {}
+
     # Get the names of the similar players
-    similar_player_names = []
     for id in player_ids:
         player = players.find_player_by_id(id)
-        similar_player_names.append(player['full_name'])
-    return similar_player_names
+        player_names[id] = player['full_name']
+    
+    return player_names
 
-def json_exporter(names: list):
-    '''
-    Export the names to a JSON file
-    '''
-    with open('names.json', 'w') as f:
-        json.dump(names, f)
 
 if __name__ == '__main__':
     data = load_prep_data('all_player_stats.csv')
     ids = get_player_ids(data, '2023-24', 2544)
     names = get_names(ids)
-    print(names)
+    id_name_dict = {id: names[id] for id in ids}
+    print(id_name_dict)
