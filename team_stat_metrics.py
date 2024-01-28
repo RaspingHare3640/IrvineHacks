@@ -1,4 +1,3 @@
-
 import pandas as pd
 csv_path = 'all_team_stats.csv'
 

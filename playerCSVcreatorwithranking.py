@@ -1,7 +1,7 @@
 import pandas as pd
 import time
 from nba_api.stats.static import players
-from nba_api.stats.endpoints import playercareerstats
+from nba_api.stats.endpoints import leaguedashplayerstats
 
 # Get all players
 active_player_dict = players.get_active_players()
@@ -14,13 +14,13 @@ for player in active_player_dict:
     player_id = player['id']
 
     # Get player's career stats
-    player_career = playercareerstats.PlayerCareerStats(player_id)
+    player_career = leaguedashplayerstats.LeagueDashPlayerStats(player_id)
 
     # Convert to DataFrame
     data = player_career.get_data_frames()[0]
     # Append DataFrame to list
     all_player_stats.append(data)
-    time.sleep(10)
+    time.sleep(15)
 
 # Concatenate all DataFrames in the list
 all_player_stats_df = pd.concat(all_player_stats, ignore_index=True)
