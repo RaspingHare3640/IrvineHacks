@@ -3,7 +3,7 @@
     <div>
     <div class="inp-cont">
       <input class="team-input" @click="toggleDropdown" v-model="filterText" placeholder="Type to filter teams" />
-      <button>Submit</button>
+      <button @click="getRequest">Submit</button>
     </div>
     
     <div class="custom-dropdown">
@@ -24,6 +24,7 @@
 
 <script>
 import Header from "../components/Header.vue"
+import axios from "axios"
 
 export default {
   name: 'HomeView',
@@ -85,6 +86,15 @@ export default {
       this.isDropdownOpen = false;
       this.filterText = team
     },
+
+    async getRequest () {
+      const res = await fetch("http://127.0.0.1:5000", {
+          sus: "sus"
+        });
+
+        const data = await res.json()
+        console.log(data)
+    }
   },
 }
 </script>
