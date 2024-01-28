@@ -19,11 +19,14 @@ if __name__== '__main__':
     mean_stats(data)
 
     
+# LOWER SCORES ARE BETTER FOR ALL THE METRICS!!!
 
-# # LOWER SCORES ARE BETTER FOR ALL THE METRICS!!!
+# Perimeter offense: Generating free throws, midrange effectiveness, and 3-point shooting
+# 3P% Rank, FTA Rank, PFD Rank
 
-# # Perimeter offense: Generating free throws, midrange effectiveness, and 3-point shooting
-# # 3P% Rank, FTA Rank, PFD Rank
+# csv_path = 'all_team_stats.csv'
+
+# data = pd.read_csv(csv_path)
 
 # perimeter_offense_dict = {}
 

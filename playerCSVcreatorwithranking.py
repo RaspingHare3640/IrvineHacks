@@ -26,4 +26,4 @@ for player in active_player_dict:
 all_player_stats_df = pd.concat(all_player_stats, ignore_index=True)
 
 # Save DataFrame to a CSV file
-all_player_stats_df.to_csv('all_player_stats.csv', index=False)
+all_player_stats_df.to_csv('all_player_stats_ranked.csv', index=False)
