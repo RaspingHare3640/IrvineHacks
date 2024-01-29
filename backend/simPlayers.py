@@ -50,6 +50,7 @@ def get_player_ids(data: pd.DataFrame, targetseason: str, player_id: int):
     euclidean_dist_by_season = euclidean_dist_by_season[targetseason]
 
     # Find the index of the player of interest in the data for the season of interest
+    
     player_index = data_season[data_season['PLAYER_ID'] == player_id].index[0]
 
     # Get the top 10 similar players for the player of interest 

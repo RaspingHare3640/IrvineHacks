@@ -20,8 +20,16 @@
       
     </div>
     <!-- <p>Filter Text: {{ filterText }}</p> -->
+    <div class="players">
+      <ol>
+        <li class="player" v-for="player in players"> 
+          {{ player }}
+        </li>
+      </ol>
+    </div>
   </div>
   </div>
+
 </template>
 
 <script>
@@ -38,6 +46,8 @@ export default {
       filterText: "",
       isDropdownOpen: false,
       selectedTeam: "",
+      players: [],
+      onSubmitTeam: false,
       teams : [
       "Atlanta Hawks",
       "Boston Celtics",
@@ -96,11 +106,12 @@ export default {
       headers: {
         'Content-Type': 'application/json'
       }
-      }).then(request => {
+      }).then(response => {
         
-        let req =  this.getRequest()
+        let play =  this.getRequest()
 
-        console.log(req)
+        this.onSubmitTeam = true;
+        
         
 
       }).catch(error => console.log(error))
@@ -114,7 +125,8 @@ export default {
         });
 
         const data = await res.json()
-        console.log(data)
+        console.log(data.teamData[0])
+        this.players = data.teamData[0]
         return data;
     }
   },
@@ -222,6 +234,20 @@ export default {
 
 .options div:hover {
   background-color: #f0f0f0;
+}
+
+
+.players {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player {
+  margin: 1em;
+  border-bottom: 1px solid #3498db;
+  padding: 1em;
+  border-radius: 0.75em;
 }
 
 </style>
